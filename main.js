@@ -1,13 +1,9 @@
-<<<<<<< HEAD
-require(["pixi", "tiles"], function (PIXI, tiles) {
-    var levelBuilder = new tiles.LevelBuilder();
-    var level = levelBuilder.createMap();
-    
-=======
 "use strict";
 
-require(["pixi", "underscore", "loop", "input"], function (PIXI, _, loop, input) {
->>>>>>> abc4769303d48361b560b7bf41c81c1c6c14191f
+require(["pixi", "underscore", "loop", "input", "tiles"], function (PIXI, _, loop, input, tiles) {
+    var levelBuilder = new tiles.LevelBuilder();
+    levelBuilder.createMap();
+
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x66FF99);
 
