@@ -1,4 +1,6 @@
-require(["pixi"], function (PIXI) {
+"use strict";
+
+require(["pixi", "underscore", "loop", "input"], function (PIXI, _, loop, input) {
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x66FF99);
 
@@ -29,9 +31,29 @@ require(["pixi"], function (PIXI) {
         requestAnimFrame( animate );
 
         // just for fun, lets rotate mr rabbit a little
-        bunny.rotation += 0.1;
+        // bunny.rotation += 0.1;
 
         // render the stage
         renderer.render(stage);
     }
+    var keys = input.keyMapping;
+    var inputDevice = new input.InputDevice([keys.LEFT, keys.RIGHT, keys.UP, keys.DOWN]);
+
+    var gameLoop = new loop.Loop(30, function(dt) {
+        if (inputDevice.keysDown[keys.LEFT]) {
+            bunny.position.x -= 100 * dt;
+        }
+        if (inputDevice.keysDown[keys.RIGHT]) {
+            bunny.position.x += 100 * dt;
+        }
+
+        if (inputDevice.keysDown[keys.UP]) {
+            bunny.position.y -= 100 * dt;
+        }
+        if (inputDevice.keysDown[keys.DOWN]) {
+            bunny.position.y += 100 * dt;
+        }
+    });
+
+    gameLoop.start();
 });
