@@ -19,8 +19,6 @@ define(["pixi", "underscore"], function (PIXI, _) {
         _.forEach(animationsConfig, function(config, animationName) {
             var frames = [];
             for(var i = config.start; i <= config.end; i++) {
-                console.log([i % (texture.width / frameWidth) * frameWidth,
-                    Math.floor(i / (texture.width / frameWidth)) * frameHeight, frameWidth, frameHeight]);
                 frames.push(new PIXI.Texture(texture, new PIXI.Rectangle(
                     (i % (texture.width / frameWidth)) * frameWidth,
                     Math.floor(i / (texture.width / frameWidth)) * frameHeight, frameWidth, frameHeight)));

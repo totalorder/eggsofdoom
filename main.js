@@ -1,7 +1,7 @@
 "use strict";
 
-require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation"],
-    function (PIXI, _, loop, input, tiles, player, animation) {
+require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation", "world"],
+    function (PIXI, _, loop, input, tiles, player, animation, world) {
 
     var loader = new PIXI.AssetLoader(["penguin.png", "tile.png", "tile_hard.png"]);
     loader.onComplete = function() {
@@ -16,27 +16,11 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation"],
         document.body.appendChild(renderer.view);
 
         var levelBuilder = new tiles.LevelBuilder();
-        var levelMap = levelBuilder.createMap();
-        // your tilemap container
         var mapContainer = new PIXI.DisplayObjectContainer();
+        var map = levelBuilder.createMap(mapContainer, 32);
 
-        // ... add all the sprites to the container
-        for (var y = 0; y < levelMap.length; y++) {
-            for (var x = 0; x < levelMap[y].length; x++) {
-                var tile;
-                if (parseInt(levelMap[y][x]) == 2) {
-                    tile = PIXI.Sprite.fromImage("tile.png");
-                }
-                if (parseInt(levelMap[y][x]) == 3) {
-                    tile = PIXI.Sprite.fromImage("tile_hard.png")
-                }
-                tile.x = x * 32;
-                tile.y = y * 32;
-                tile.width = 32;
-                tile.height = 32;
-                mapContainer.addChild(tile);
-            }
-        }
+        var gameWorld = world.World(map);
+
         // render the tilemap to a render texture
         var mapTexture = new PIXI.RenderTexture(renderer.width, renderer.height);
         mapTexture.render(mapContainer);
@@ -48,9 +32,7 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation"],
         stage.addChild(background);
 
         // create a texture from an image path
-        var tex = new PIXI.Texture.fromImage("penguin.png");
-
-        var texture = new PIXI.Texture(tex, new PIXI.Rectangle(0,0,40,40));
+        var texture = new PIXI.Texture.fromImage("penguin.png");
 
         // create a new Sprite using the texture
         var bunny = new PIXI.Sprite(texture);
@@ -62,13 +44,13 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation"],
 
         var keys = input.keyMapping;
         var inputDevice = new input.InputDevice([keys.LEFT, keys.RIGHT, keys.UP, keys.DOWN]);
-        var playerAnimationSet = new animation.AnimationSet(tex, 40, 40, {'idle': {'start': 0, 'end': 2}});
+        var playerAnimationSet = new animation.AnimationSet(texture, 40, 40, {'idle': {'start': 0, 'end': 2}});
         var players = [];
         players.push(new player.Player(0, 0, 0, bunny, playerAnimationSet));
 
         var gameLoop = new loop.Loop(30, function(dt) {
             _.forEach(players, function(player) {
-                player.update(dt, inputDevice.keysDown);
+                player.update(dt, inputDevice.keysDown, gameWorld);
             });
         });
 
