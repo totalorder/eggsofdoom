@@ -86,4 +86,5 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation"],
 
         gameLoop.start();
     };
+    loader.load();
 });
