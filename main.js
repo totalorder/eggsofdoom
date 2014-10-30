@@ -23,19 +23,22 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation"],
         // ... add all the sprites to the container
         for (var y = 0; y < levelMap.length; y++) {
             for (var x = 0; x < levelMap[y].length; x++) {
+                var tile;
                 if (parseInt(levelMap[y][x]) == 2) {
-                    var tile = PIXI.Sprite.fromImage("tile.png");
+                    tile = PIXI.Sprite.fromImage("tile.png");
                 }
                 if (parseInt(levelMap[y][x]) == 3) {
-                    var tile = PIXI.Sprite.fromImage("tile_hard.png")
+                    tile = PIXI.Sprite.fromImage("tile_hard.png")
                 }
-                tile.x = x * 64;
-                tile.y = y * 64;
+                tile.x = x * 32;
+                tile.y = y * 32;
+                tile.width = 32;
+                tile.height = 32;
                 mapContainer.addChild(tile);
             }
         }
         // render the tilemap to a render texture
-        var mapTexture = new PIXI.RenderTexture();
+        var mapTexture = new PIXI.RenderTexture(renderer.width, renderer.height);
         mapTexture.render(mapContainer);
 
         // create a single background sprite with the texture
