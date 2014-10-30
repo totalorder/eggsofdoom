@@ -15,17 +15,13 @@ define(["underscore"], function() {
         });
 
         document.addEventListener('keydown', function(event) {
-            if(keysDown[event.keyCode] === undefined) {
-                console.log("Unknown key code (down)! " + event.keyCode);
-            } else {
+            if(keysDown[event.keyCode] !== undefined) {
                 keysDown[event.keyCode] = true;
             }
         });
 
         document.addEventListener('keyup', function(event) {
-            if(keysDown[event.keyCode] === undefined) {
-                console.log("Unknown key code (up)! " + event.keyCode);
-            } else {
+            if(keysDown[event.keyCode] !== undefined) {
                 keysDown[event.keyCode] = false;
             }
         });
