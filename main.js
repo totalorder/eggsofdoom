@@ -1,4 +1,7 @@
-require(["pixi"], function (PIXI) {
+require(["pixi", "tiles"], function (PIXI, tiles) {
+    var levelBuilder = new tiles.LevelBuilder();
+    var level = levelBuilder.createMap();
+    
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x66FF99);
 
@@ -24,7 +27,7 @@ require(["pixi"], function (PIXI) {
     bunny.position.y = 150;
 
     stage.addChild(bunny);
-
+    
     function animate() {
         requestAnimFrame( animate );
 
