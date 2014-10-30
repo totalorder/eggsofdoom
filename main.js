@@ -1,62 +1,62 @@
 "use strict";
 
-require(["pixi", "underscore", "loop", "input", "tiles"], function (PIXI, _, loop, input, tiles) {
+require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation"],
+        function (PIXI, _, loop, input, tiles, player, animation) {
     var levelBuilder = new tiles.LevelBuilder();
     levelBuilder.createMap();
 
-    // create an new instance of a pixi stage
-    var stage = new PIXI.Stage(0x66FF99);
+    var loader = new PIXI.AssetLoader(["penguin.png"]);
+    loader.onComplete = function() {
+        // create an new instance of a pixi stage
+        var stage = new PIXI.Stage(0x66FF99);
 
-    // create a renderer instance.
-    var renderer = PIXI.autoDetectRenderer(400, 300);
+        // create a renderer instance.
+        var renderer = PIXI.autoDetectRenderer(400, 300);
 
-    // add the renderer view element to the DOM
-    document.body.appendChild(renderer.view);
+        // add the renderer view element to the DOM
+        document.body.appendChild(renderer.view);
 
-    requestAnimFrame( animate );
+        // create a texture from an image path
+        var tex = new PIXI.Texture.fromImage("penguin.png");
 
-    // create a texture from an image path
-    var texture = PIXI.Texture.fromImage("penguin.png");
-    // create a new Sprite using the texture
-    var bunny = new PIXI.Sprite(texture);
+        var texture = new PIXI.Texture(tex, new PIXI.Rectangle(0,0,40,40));
 
-    // center the sprites anchor point
-    bunny.anchor.x = 0.5;
-    bunny.anchor.y = 0.5;
+        // create a new Sprite using the texture
+        var bunny = new PIXI.Sprite(texture);
 
-    // move the sprite t the center of the screen
-    bunny.position.x = 200;
-    bunny.position.y = 150;
+        // center the sprites anchor point
+        bunny.anchor.x = 0.5;
+        bunny.anchor.y = 0.5;
+        stage.addChild(bunny);
 
-    stage.addChild(bunny);
-    
-    function animate() {
-        requestAnimFrame( animate );
+        var keys = input.keyMapping;
+        var inputDevice = new input.InputDevice([keys.LEFT, keys.RIGHT, keys.UP, keys.DOWN]);
+        var playerAnimationSet = new animation.AnimationSet(tex, 40, 40, {'idle': {'start': 0, 'end': 2}});
+        var players = [];
+        players.push(new player.Player(0, 0, 0, bunny, playerAnimationSet));
 
-        // just for fun, lets rotate mr rabbit a little
-        // bunny.rotation += 0.1;
+        var gameLoop = new loop.Loop(30, function(dt) {
+            _.forEach(players, function(player) {
+                player.update(dt, inputDevice.keysDown);
+            });
+        });
 
-        // render the stage
-        renderer.render(stage);
-    }
-    var keys = input.keyMapping;
-    var inputDevice = new input.InputDevice([keys.LEFT, keys.RIGHT, keys.UP, keys.DOWN]);
+        var startTime = new Date().getTime();
+        var lastStartTime = startTime;
+        var render = function() {
+            lastStartTime = startTime;
+            startTime = new Date().getTime();
+            var dt = (startTime - lastStartTime) / 1000;
+            requestAnimFrame(render);
+            _.forEach(players, function(player) {
+                player.render(dt);
+            });
+            renderer.render(stage);
+        };
 
-    var gameLoop = new loop.Loop(30, function(dt) {
-        if (inputDevice.keysDown[keys.LEFT]) {
-            bunny.position.x -= 100 * dt;
-        }
-        if (inputDevice.keysDown[keys.RIGHT]) {
-            bunny.position.x += 100 * dt;
-        }
+        requestAnimFrame(render);
 
-        if (inputDevice.keysDown[keys.UP]) {
-            bunny.position.y -= 100 * dt;
-        }
-        if (inputDevice.keysDown[keys.DOWN]) {
-            bunny.position.y += 100 * dt;
-        }
-    });
-
-    gameLoop.start();
+        gameLoop.start();
+    };
+    loader.load();
 });
