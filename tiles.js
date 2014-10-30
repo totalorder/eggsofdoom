@@ -26,6 +26,7 @@ define(function () {
                     console.log("cube[" + i + "][" + j + "] = " + cube[j]);
                 }
             }*/
+            return cubes;
         };
        
         return {
