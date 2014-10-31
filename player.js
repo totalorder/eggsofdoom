@@ -3,26 +3,34 @@
 define(["input"], function (input) {
     var Player = function (id, x, y, sprite, animationSet) {
         var currentAnimation = 'idle';
-        var width = 10;
-        var height = 10;
-
+        var width = 20;
+        var height = 20;
+        var getBoundingBox = function() {
+            return {
+                'x': x - width / 2,
+                'y': y - height / 2,
+                'x2': x + width / 2,
+                'y2': y + height / 2
+            };
+        };
         var update = function(dt, keysDown, world) {
-            var newX = x,
-                newY = y;
+            var diffY = 0,
+                diffX = 0;
+
             if (keysDown[input.keyMapping.LEFT]) {
-                newX -= 100 * dt;
+                diffY = -100 * dt;
             }
             if (keysDown[input.keyMapping.RIGHT]) {
-                newX += 100 * dt;
+                diffY = 100 * dt;
             }
-
             if (keysDown[input.keyMapping.UP]) {
-                newY -= 100 * dt;
+                diffX = -100 * dt;
             }
             if (keysDown[input.keyMapping.DOWN]) {
-                newY += 100 * dt;
+                diffX = 100 * dt;
             }
-            var newPos = world.move(width, height, x, y, newX, newY);
+
+            var newPos = world.move(getBoundingBox(), x, y, diffY, diffX);
             x = newPos.x;
             y = newPos.y;
             sprite.position.x = x;

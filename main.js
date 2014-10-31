@@ -52,7 +52,7 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation", 
 
         // center the sprites anchor point
         bunny.anchor.x = 0.5;
-        bunny.anchor.y = 0.5;
+        bunny.anchor.y = 0.7;
         stage.addChild(bunny);
 
         var keys = input.keyMapping;
