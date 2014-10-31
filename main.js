@@ -17,7 +17,20 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation", 
 
         var levelBuilder = new tiles.LevelBuilder();
         var mapContainer = new PIXI.DisplayObjectContainer();
-        var map = levelBuilder.createMap(mapContainer, 32);
+        var map = levelBuilder.Map(
+            [[3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+             [3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3],
+             [3, 2, 3, 3, 3, 2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
+             [3, 2, 3, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 3],
+             [3, 2, 3, 3, 3, 2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3],
+             [3, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3],
+             [3, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
+             [3, 2, 3, 3, 3, 2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3],
+             [3, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 3],
+             [3, 2, 3, 3, 3, 2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
+             [3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3],
+             [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]],
+            mapContainer, 32);
 
         var gameWorld = world.World(map);
 
@@ -46,7 +59,7 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation", 
         var inputDevice = new input.InputDevice([keys.LEFT, keys.RIGHT, keys.UP, keys.DOWN]);
         var playerAnimationSet = new animation.AnimationSet(texture, 40, 40, {'idle': {'start': 0, 'end': 2}});
         var players = [];
-        players.push(new player.Player(0, 0, 0, bunny, playerAnimationSet));
+        players.push(new player.Player(0, 50, 50, bunny, playerAnimationSet));
 
         var gameLoop = new loop.Loop(30, function(dt) {
             _.forEach(players, function(player) {

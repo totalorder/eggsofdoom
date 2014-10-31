@@ -28,34 +28,30 @@ define(["pixi"], function (PIXI) {
                 y: y
             }
         },
-        
-        createMap = function (mapContainer, tileSize) {
-            var map = [
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],    
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],    
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],    
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],    
-                [2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
-            ];
 
-            for(var rowNum = 0; rowNum < map.length; rowNum++) {
-                var row = map[rowNum];
-                for(var colNum = 0; colNum < row.length; colNum++) {
-                    map[rowNum][colNum] = new Tile(mapContainer, tileSize, map[rowNum][colNum], rowNum, colNum);
+        Map = function(mapDesign, mapContainer, tileSize) {
+            var map = [];
+            for(var rowNum = 0; rowNum < mapDesign.length; rowNum++) {
+                var designRow = mapDesign[rowNum];
+                var row = [];
+                for(var colNum = 0; colNum < designRow.length; colNum++) {
+                    row.push(new Tile(mapContainer, tileSize, mapDesign[rowNum][colNum], colNum, rowNum));
                 }
+                map.push(row);
             }
-            return map;
+
+            var getTileAtPosition = function(x, y) {
+                console.log(x, y, tileSize);
+                return map[Math.floor(y / tileSize)][Math.floor(x / tileSize)];
+            };
+
+            return {
+                getTileAtPosition : getTileAtPosition
+            }
         };
-       
+
         return {
-            createMap: createMap        
+            Map: Map
         };
     };  
     return {
