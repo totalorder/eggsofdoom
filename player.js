@@ -39,7 +39,10 @@ define(["input"], function (input) {
 
         var render = function(dt) {
             var animation = animationSet.animations[currentAnimation];
-            sprite.setTexture(animation.getCurrentFrameTexture(dt)); // TODO: Should not update texture if not changed
+            var newFrameTexture = animation.getNewFrameTexture(dt);
+            if (newFrameTexture) {
+                sprite.setTexture(newFrameTexture);
+            }
         };
 
         return {

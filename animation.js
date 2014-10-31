@@ -3,13 +3,19 @@
 define(["pixi", "underscore"], function (PIXI, _) {
     var Animation = function (animationSpeed, frames) {
         var currentFrame = 0;
-        var getCurrentFrameTexture = function (dt) {
+        var getNewFrameTexture = function (dt) {
+            var lastFrame = Math.floor(currentFrame);
             currentFrame = (currentFrame + dt * animationSpeed) % frames.length;
-            return frames[Math.floor(currentFrame)];
+            var newFrame = Math.floor(currentFrame);
+            if (lastFrame !== newFrame) {
+                return frames[newFrame];
+            } else {
+                return null;
+            }
         };
 
         return {
-            getCurrentFrameTexture: getCurrentFrameTexture
+            getNewFrameTexture: getNewFrameTexture
         }
     };
 

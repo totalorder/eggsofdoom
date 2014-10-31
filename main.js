@@ -15,9 +15,8 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation", 
         // add the renderer view element to the DOM
         document.body.appendChild(renderer.view);
 
-        var levelBuilder = new tiles.LevelBuilder();
         var mapContainer = new PIXI.DisplayObjectContainer();
-        var map = levelBuilder.Map(
+        var map = new tiles.Map(
             [[3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
              [3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3],
              [3, 2, 3, 3, 3, 2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3],
@@ -45,21 +44,21 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation", 
         stage.addChild(background);
 
         // create a texture from an image path
-        var texture = new PIXI.Texture.fromImage("penguin.png");
+        var playerTexture = new PIXI.Texture.fromImage("penguin.png");
 
         // create a new Sprite using the texture
-        var bunny = new PIXI.Sprite(texture);
+        var playerSprite = new PIXI.Sprite(playerTexture);
 
         // center the sprites anchor point
-        bunny.anchor.x = 0.5;
-        bunny.anchor.y = 0.7;
-        stage.addChild(bunny);
+        playerSprite.anchor.x = 0.5;
+        playerSprite.anchor.y = 0.7;
+        stage.addChild(playerSprite);
 
         var keys = input.keyMapping;
         var inputDevice = new input.InputDevice([keys.LEFT, keys.RIGHT, keys.UP, keys.DOWN]);
-        var playerAnimationSet = new animation.AnimationSet(texture, 40, 40, {'idle': {'start': 0, 'end': 2}});
+        var playerAnimationSet = new animation.AnimationSet(playerTexture, 40, 40, {'idle': {'start': 0, 'end': 2}});
         var players = [];
-        players.push(new player.Player(0, 50, 50, bunny, playerAnimationSet));
+        players.push(new player.Player(0, 50, 50, playerSprite, playerAnimationSet));
 
         var gameLoop = new loop.Loop(30, function(dt) {
             _.forEach(players, function(player) {
