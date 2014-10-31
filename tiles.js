@@ -41,7 +41,6 @@ define(["pixi"], function (PIXI) {
             }
 
             var getTileAtPosition = function(x, y) {
-                console.log(x, y, tileSize);
                 return map[Math.floor(y / tileSize)][Math.floor(x / tileSize)];
             };
 
