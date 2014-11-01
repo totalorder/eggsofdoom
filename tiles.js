@@ -28,9 +28,13 @@ define(["pixi"], function (PIXI) {
 
     Map = function(mapDesign, mapContainer, tileSize) {
         var map = [];
+        var width;
+        var height = mapDesign.length;
+
         for(var rowNum = 0; rowNum < mapDesign.length; rowNum++) {
             var designRow = mapDesign[rowNum];
             var row = [];
+            width = designRow.length;
             for(var colNum = 0; colNum < designRow.length; colNum++) {
                 row.push(new Tile(mapContainer, tileSize, mapDesign[rowNum][colNum], colNum, rowNum));
             }
@@ -42,6 +46,8 @@ define(["pixi"], function (PIXI) {
         };
 
         return {
+            width: width,
+            height: height,
             getTileAtPosition : getTileAtPosition
         }
     };
