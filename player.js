@@ -17,16 +17,16 @@ define(["input"], function (input) {
             var diffY = 0,
                 diffX = 0;
 
-            if (keysDown[input.keyMapping.LEFT]) {
+            if (keysDown[input.keyMapping.LEFT] && !keysDown[input.keyMapping.RIGHT]) {
                 diffY = -100 * dt;
             }
-            if (keysDown[input.keyMapping.RIGHT]) {
+            if (keysDown[input.keyMapping.RIGHT] && !keysDown[input.keyMapping.LEFT]) {
                 diffY = 100 * dt;
             }
-            if (keysDown[input.keyMapping.UP]) {
+            if (keysDown[input.keyMapping.UP] && !keysDown[input.keyMapping.DOWN]) {
                 diffX = -100 * dt;
             }
-            if (keysDown[input.keyMapping.DOWN]) {
+            if (keysDown[input.keyMapping.DOWN] && !keysDown[input.keyMapping.UP]) {
                 diffX = 100 * dt;
             }
 
