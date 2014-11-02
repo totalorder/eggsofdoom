@@ -1,7 +1,7 @@
 "use strict";
 
 define(["input", "pixi", "animation"], function (input, PIXI, animation) {
-    var Player = function (id, x, y, stage) {
+    var Egg = function (id, x, y, stage) {
         var currentAnimation = 'idle';
         var width = 20;
         var height = 20;
@@ -13,44 +13,23 @@ define(["input", "pixi", "animation"], function (input, PIXI, animation) {
                 'y2': y + height / 2
             };
         };
-        var texture = new PIXI.Texture.fromImage("penguin.png");
+        var texture = new PIXI.Texture.fromImage("egg.png");
         var sprite = function() {
             // create a new Sprite using the texture            
-            var playerSprite = new PIXI.Sprite(texture);
+            var eggSprite = new PIXI.Sprite(texture);
             // center the sprites anchor point
-            playerSprite.anchor.x = 0.5;
-            playerSprite.anchor.y = 0.7;
-            return playerSprite;
+            eggSprite.anchor.x = 0.5;
+            eggSprite.anchor.y = 0.5;
+            return eggSprite;
         }();
         var animationSet = function() {                                     
             
             stage.addChild(sprite);
-            var playerAnimationSet = new animation.AnimationSet(texture, 40, 40, {'idle': {'start': 0, 'end': 2}});
+            var eggAnimationSet = new animation.AnimationSet(texture, 40, 40, {'idle': {'start': 0, 'end': 2}});
             
-            return playerAnimationSet;
+            return eggAnimationSet;
         }();
         var update = function(dt, keysDown, world) {
-            var diffY = 0,
-                diffX = 0;
-
-            if (keysDown[input.keyMapping.LEFT] && !keysDown[input.keyMapping.RIGHT]) {
-                diffY = -100 * dt;
-            }
-            if (keysDown[input.keyMapping.RIGHT] && !keysDown[input.keyMapping.LEFT]) {
-                diffY = 100 * dt;
-            }
-            if (keysDown[input.keyMapping.UP] && !keysDown[input.keyMapping.DOWN]) {
-                diffX = -100 * dt;
-            }
-            if (keysDown[input.keyMapping.DOWN] && !keysDown[input.keyMapping.UP]) {
-                diffX = 100 * dt;
-            }
-
-            var newPos = world.move(getBoundingBox(), x, y, diffY, diffX);
-            x = newPos.x;
-            y = newPos.y;
-            sprite.position.x = x;
-            sprite.position.y = y;
         };
 
         var render = function(dt) {
@@ -61,8 +40,6 @@ define(["input", "pixi", "animation"], function (input, PIXI, animation) {
             }
         };
         
-       
-
         return {
             'id': id,
             'x': x,
@@ -73,7 +50,7 @@ define(["input", "pixi", "animation"], function (input, PIXI, animation) {
     };
 
     return {
-        'Player': Player
+        'Egg': Egg
     }
 });
 

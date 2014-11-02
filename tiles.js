@@ -3,13 +3,21 @@
 define(["pixi"], function (PIXI) {
     var Tile = function(mapContainer, tileSize, type, x, y) {
         var sprite;
-        if (type === 2) {
-            sprite = PIXI.Sprite.fromImage("tile.png");
-        } else if (type === 3) {
-            sprite = PIXI.Sprite.fromImage("tile_hard.png")
-        } else {
-            throw "Unknown type! " + type;
+        switch (type)
+        {
+            case 1:
+                sprite = PIXI.Sprite.fromImage("tile_soft.png");
+                break;
+            case 2:
+                sprite = PIXI.Sprite.fromImage("tile.png");
+                break;
+            case 3: 
+                sprite = PIXI.Sprite.fromImage("tile_hard.png");
+                break;
+            default:
+                throw "tile type not recognized" + type;
         }
+        
         sprite.x = x * tileSize;
         sprite.y = y * tileSize;
         sprite.width = tileSize;
@@ -17,8 +25,14 @@ define(["pixi"], function (PIXI) {
         mapContainer.addChild(sprite);
 
         var isPassable = function() {
-            return type !== 3;
+            return type === 2;
         };
+        
+        var isDestructable = function() {
+            return type === 1;
+        }
+        
+        
         return {
             isPassable: isPassable,
             x: x,

@@ -3,7 +3,7 @@
 require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation", "world"],
     function (PIXI, _, loop, input, tiles, player, animation, world) {
 
-    var loader = new PIXI.AssetLoader(["penguin.png", "tile.png", "tile_hard.png"]);
+    var loader = new PIXI.AssetLoader(["penguin.png", "tile.png", "tile_hard.png", "tile_soft.png", "egg.png"]);
     loader.onComplete = function() {
         var tileSize = 32;
         var mapContainer = new PIXI.DisplayObjectContainer();
@@ -15,9 +15,9 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation", 
              [3, 2, 3, 3, 3, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 3],
              [3, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 3],
              [3, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 3],
-             [3, 2, 3, 3, 3, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 3],
-             [3, 2, 3, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 3],
-             [3, 2, 3, 2, 3, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 3],
+             [3, 2, 3, 3, 3, 2, 1, 2, 3, 2, 2, 3, 2, 2, 2, 3],
+             [3, 2, 3, 2, 3, 2, 1, 2, 3, 2, 2, 2, 2, 2, 2, 3],
+             [3, 2, 3, 2, 3, 2, 1, 2, 3, 2, 2, 3, 2, 2, 2, 3],
              [3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 3],
              [3, 2, 3, 2, 3, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 3],
              [3, 2, 3, 2, 3, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 3],
@@ -43,22 +43,10 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation", 
         // add the background to the stage
         stage.addChild(background);
 
-        // create a texture from an image path
-        var playerTexture = new PIXI.Texture.fromImage("penguin.png");
-
-        // create a new Sprite using the texture
-        var playerSprite = new PIXI.Sprite(playerTexture);
-
-        // center the sprites anchor point
-        playerSprite.anchor.x = 0.5;
-        playerSprite.anchor.y = 0.7;
-        stage.addChild(playerSprite);
-
         var keys = input.keyMapping;
-        var inputDevice = new input.InputDevice([keys.LEFT, keys.RIGHT, keys.UP, keys.DOWN]);
-        var playerAnimationSet = new animation.AnimationSet(playerTexture, 40, 40, {'idle': {'start': 0, 'end': 2}});
+        var inputDevice = new input.InputDevice([keys.LEFT, keys.RIGHT, keys.UP, keys.DOWN]);        
         var players = [];
-        players.push(new player.Player(0, 50, 50, playerSprite, playerAnimationSet));
+        players.push(new player.Player(0, 50, 50, stage));
 
         var gameLoop = new loop.Loop(30, function(dt) {
             _.forEach(players, function(player) {
@@ -68,6 +56,7 @@ require(["pixi", "underscore", "loop", "input", "tiles", "player", "animation", 
 
         var startTime = new Date().getTime();
         var lastStartTime = startTime;
+        
         var render = function() {
             lastStartTime = startTime;
             startTime = new Date().getTime();
